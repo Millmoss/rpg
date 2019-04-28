@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour
 	public Camera c;
 	public Rigidbody playerBody;
 	public GlobalInput input;
+	public Animator anim;
 	private Vector3 velocity = Vector3.zero;
 
     void Start()
@@ -28,9 +29,17 @@ public class Movement : MonoBehaviour
 		r = new Vector3(r.x, 0, r.z).normalized;
 		velocity += x * acceleration * Time.deltaTime * r +
 					z * acceleration * Time.deltaTime * f;
+
+		float stop = 1f;
+		if (x == 0 && z == 0)
+			stop = 3f;
+		velocity = Vector3.Lerp(velocity, Vector3.zero, stop * Time.deltaTime);
 		velocity = Vector3.ClampMagnitude(velocity, maxVelocity);
 
-		playerBody.rotation = Quaternion.Slerp(playerBody.rotation, Quaternion.LookRotation(velocity.normalized, transform.up), turnSpeed * Time.deltaTime);
+		if (velocity != Vector3.zero)		//TODO : fix jitter on rotation
+			playerBody.rotation = Quaternion.Slerp(playerBody.rotation, Quaternion.LookRotation(velocity.normalized, transform.up), turnSpeed * Time.deltaTime);
+
+		anim.SetFloat("MovementSpeed", velocity.magnitude / maxVelocity, .1f, Time.deltaTime);
 	}
 
 	void FixedUpdate()
@@ -38,5 +47,5 @@ public class Movement : MonoBehaviour
 		Vector3 velocityCurrent = new Vector3(playerBody.velocity.x, 0, playerBody.velocity.z);
 		velocityCurrent = Vector3.Lerp(velocityCurrent, velocity, velocityLerping * Time.deltaTime);
 		playerBody.velocity = new Vector3(velocityCurrent.x, playerBody.velocity.y, velocityCurrent.z);
-    }
+	}
 }

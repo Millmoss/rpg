@@ -819,6 +819,7 @@ MonoBehaviour:
   c: {fileID: 1687258584}
   playerBody: {fileID: 307736944}
   input: {fileID: 307736948}
+  anim: {fileID: 1600475007}
 --- !u!114 &307736948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3454,6 +3455,12 @@ MonoBehaviour:
   ikActive: 1
   rightHandObj: {fileID: 0}
   lookObj: {fileID: 0}
+--- !u!95 &1600475007 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: a74f125580992d941a85c55036ee3493,
+    type: 3}
+  m_PrefabInstance: {fileID: 786013157}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1600475008 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: a74f125580992d941a85c55036ee3493,
