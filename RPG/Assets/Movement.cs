@@ -5,7 +5,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 	public float acceleration = 1.3f;
-	public float maxVelocity = 2.5f;
+	public float maxJog = 2.5f;
+	public float maxSprint = 4.0f;
 	public float velocityLerping = 0.9f;
 	public float turnSpeed = 5f;
 	public Camera c;
@@ -23,7 +24,8 @@ public class Movement : MonoBehaviour
 	{
 		float x = input.getXTiltMove();
 		float z = input.getZTiltMove();
-		Vector3 f = c.transform.forward;
+		bool sprinting = input.getSprint();
+			Vector3 f = c.transform.forward;
 		f = new Vector3(f.x, 0, f.z).normalized;
 		Vector3 r = c.transform.right;
 		r = new Vector3(r.x, 0, r.z).normalized;
@@ -34,12 +36,18 @@ public class Movement : MonoBehaviour
 		if (x == 0 && z == 0)
 			stop = 3f;
 		velocity = Vector3.Lerp(velocity, Vector3.zero, stop * Time.deltaTime);
-		velocity = Vector3.ClampMagnitude(velocity, maxVelocity);
+		if (!sprinting)
+			velocity = Vector3.ClampMagnitude(velocity, maxJog);
+		else
+			velocity = Vector3.ClampMagnitude(velocity, maxSprint);
 
 		if (velocity != Vector3.zero)		//TODO : fix jitter on rotation
 			playerBody.rotation = Quaternion.Slerp(playerBody.rotation, Quaternion.LookRotation(velocity.normalized, transform.up), turnSpeed * Time.deltaTime);
 
-		anim.SetFloat("MovementSpeed", velocity.magnitude / maxVelocity, .1f, Time.deltaTime);
+		if (!sprinting)
+			anim.SetFloat("MovementSpeed", 0.5f * velocity.magnitude / maxJog, .1f, Time.deltaTime);
+		else
+			anim.SetFloat("MovementSpeed", velocity.magnitude / maxSprint, .1f, Time.deltaTime);
 	}
 
 	void FixedUpdate()

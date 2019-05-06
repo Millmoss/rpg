@@ -813,7 +813,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 20
-  maxVelocity: 2.5
+  maxJog: 2.5
+  maxSprint: 5
   velocityLerping: 0.9
   turnSpeed: 5
   c: {fileID: 1687258584}
@@ -1051,7 +1052,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 496423466}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 39df1b99179c04944970b68c41c42b25, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2068,6 +2069,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanMale
       objectReference: {fileID: 0}
+    - target: {fileID: -8974888548519592356, guid: a74f125580992d941a85c55036ee3493,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f2e21c8cb9aec647999502ce56faf44, type: 2}
+    - target: {fileID: -6057140222963153312, guid: a74f125580992d941a85c55036ee3493,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6545698aa169bdb4ea01010c01b3095f, type: 2}
     - target: {fileID: -4216859302048453862, guid: a74f125580992d941a85c55036ee3493,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2123,21 +2134,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: a74f125580992d941a85c55036ee3493,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 6545698aa169bdb4ea01010c01b3095f, type: 2}
-    - target: {fileID: -481898315697404498, guid: a74f125580992d941a85c55036ee3493,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 6f2e21c8cb9aec647999502ce56faf44, type: 2}
     - target: {fileID: -163409717374919092, guid: a74f125580992d941a85c55036ee3493,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 29bcaabf9ae94b346bd6a234d7fa0347, type: 2}
+    - target: {fileID: -481898315697404498, guid: a74f125580992d941a85c55036ee3493,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f2e21c8cb9aec647999502ce56faf44, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a74f125580992d941a85c55036ee3493, type: 3}
 --- !u!1 &1045419724

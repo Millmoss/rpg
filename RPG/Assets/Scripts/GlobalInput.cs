@@ -73,4 +73,11 @@ public class GlobalInput : MonoBehaviour
 			return temp;
 		return 0;
 	}
+
+	public bool getSprint()
+	{
+		bool sprint = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+		return sprint;
+	}
 }
