@@ -5,48 +5,35 @@ using UnityEngine;
 
 public class PolyTerrain : MonoBehaviour
 {
-	public Material terrainmat;
-	public int polyscale = 10;
-	public float heightscale = 2;
-	public float sizescale = 1;
-	public float perlinscale = .75f;
-	public float perlinoffset = 100;
-	public bool deform = false;
-	public float deformamount = .1f;
-	public int deformseed = 15;
-	private Vector3[,] areaMap;
 	private Vector3[] terrainVertices;
 	private GameObject polyTerrainMesh;
 
 	void Start()
 	{
-		areaMap = new Vector3[polyscale, polyscale];
-		for (int z = 0; z < polyscale; z++)
+		//AssetDatabase.CreateAsset(polyTerrainMesh.GetComponent<MeshFilter>().mesh, "Assets/HillMesh");
+		//AssetDatabase.SaveAssets();
+	}
+
+	void Update()
+	{
+		//for (int z = 0; z < polyscale * 10; z++)
 		{
-			for (int x = 0; x < polyscale; x++)
+			//for (int x = 0; x < polyscale * 10; x++)
 			{
-				areaMap[z, x] = new Vector3(x * sizescale, Mathf.PerlinNoise(x * perlinscale + perlinoffset, z * perlinscale + perlinoffset) * heightscale, z * sizescale);
+				//float f = Perlin.Noise(x * perlinscale + perlinoffset, z * perlinscale + perlinoffset) * heightscale;
 			}
 		}
+	}
+
+	public void polyTerrain(int polyscale, float sizescale, float heightscale, float perlinscale, float perlinoffset, bool deform, float deformamount, int deformseed, Material terrainmat)
+	{
 		polyTerrainMesh = new GameObject("Plane");
 		polyTerrainMesh.layer = 9;
 		polyTerrainMesh.AddComponent<MeshFilter>();
 		polyTerrainMesh.GetComponent<MeshFilter>().mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 		polyTerrainMesh.AddComponent<MeshRenderer>();
 		polyTerrainMesh.GetComponent<MeshRenderer>().material = terrainmat;
-		polyTerrain();
-		//AssetDatabase.CreateAsset(polyTerrainMesh.GetComponent<MeshFilter>().mesh, "Assets/HillMesh");
-		//AssetDatabase.SaveAssets();
 		Random.InitState(deformseed);
-	}
-
-	void Update()
-	{
-
-	}
-
-	public void polyTerrain()
-	{
 		terrainVertices = new Vector3[polyscale * polyscale + (polyscale - 1) * (polyscale - 1)];    //areamap in the first polyscale square, the inbetweens in the second
 		int[] terrainTriangles = new int[(polyscale - 1) * (polyscale - 1) * 12];
 
@@ -99,7 +86,7 @@ public class PolyTerrain : MonoBehaviour
 		{
 			for (int x = 0; x < polyscale; x++)
 			{
-				terrainUV[z * polyscale + x] = new Vector2(areaMap[x, z].z / polyscale / 5, areaMap[x, z].x / polyscale / 5);
+				//terrainUV[z * polyscale + x] = new Vector2(areaMap[x, z].z / polyscale / 5, areaMap[x, z].x / polyscale / 5);
 			}
 		}
 
@@ -107,11 +94,11 @@ public class PolyTerrain : MonoBehaviour
 		{
 			for (int x = 0; x < polyscale - 1; x++)
 			{
-				terrainUV[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector2((areaMap[x, z].z + .5f * sizescale) / polyscale / 5, (areaMap[x, z].x + .5f * sizescale) / polyscale / 5);
+				//terrainUV[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector2((areaMap[x, z].z + .5f * sizescale) / polyscale / 5, (areaMap[x, z].x + .5f * sizescale) / polyscale / 5);
 			}
 		}
 
-		polyTerrainMesh.GetComponent<MeshFilter>().mesh.uv = terrainUV;
+		//polyTerrainMesh.GetComponent<MeshFilter>().mesh.uv = terrainUV;
 
 		Texture2D terrainTexture = new Texture2D(polyscale, polyscale, TextureFormat.ARGB32, false);
 
@@ -122,7 +109,7 @@ public class PolyTerrain : MonoBehaviour
 		{
 			for (int x = 0; x < polyscale; x++)
 			{
-				terrainTexture.SetPixel(x, z, new Color(gr.r * (.4f * areaMap[x, z].y / heightscale) + gr.r / 4, gr.g * (.4f * areaMap[x, z].y / heightscale) + gr.g / 4, gr.b * (.4f * areaMap[x, z].y / heightscale) + gr.b / 4, 0));
+				//terrainTexture.SetPixel(x, z, new Color(gr.r * (.4f * areaMap[x, z].y / heightscale) + gr.r / 4, gr.g * (.4f * areaMap[x, z].y / heightscale) + gr.g / 4, gr.b * (.4f * areaMap[x, z].y / heightscale) + gr.b / 4, 0));
 			}
 		}
 		terrainTexture.Apply();

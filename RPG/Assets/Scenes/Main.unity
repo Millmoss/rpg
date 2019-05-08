@@ -554,15 +554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f30a4e138ba2d4744b8a426240de10a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainmat: {fileID: 2100000, guid: f26b10dfc0c37174b91d4c2bcafb00e2, type: 2}
-  polyscale: 100
-  heightscale: 10
-  sizescale: 1
-  perlinscale: 0.075
-  perlinoffset: 100
-  deform: 0
-  deformamount: 0.1
-  deformseed: 15
 --- !u!4 &267825514
 Transform:
   m_ObjectHideFlags: 0
@@ -977,7 +968,7 @@ MonoBehaviour:
   c: {fileID: 1687258584}
   playerBody: {fileID: 307736944}
   input: {fileID: 307736948}
-  anim: {fileID: 0}
+  anim: {fileID: 1444633701}
 --- !u!114 &307736948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3414,6 +3405,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440616256}
   m_Mesh: {fileID: 4300006, guid: ff6dc36862fe41641bb21568d92147c9, type: 3}
+--- !u!95 &1444633701 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: a74f125580992d941a85c55036ee3493,
+    type: 3}
+  m_PrefabInstance: {fileID: 1026943879}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1458322688
 GameObject:
   m_ObjectHideFlags: 0
