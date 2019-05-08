@@ -9,18 +9,37 @@ public class TerrainManager : MonoBehaviour
 	public float heightscale = 10;
 	public float sizescale = .5f;
 	public float perlinscale = .0375f;
-	public float perlinoffset = 100;
 	public bool deform = false;
 	public float deformamount = .1f;
 	public int deformseed = 15;
-
-	// Start is called before the first frame update
+	public PolyTerrain terrain;
+	
 	void Start()
     {
-        
-    }
+		terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, 0, 0, deform, deformamount, deformseed, terrainmat);
+		for (int x = -2; x < 3; x++)
+		{
+			for (int z = -2; z < 3; z++)
+			{
+				if (x == 0 && z == 0)
+				{
+					continue;
+				}
 
-    // Update is called once per frame
+				if ((x <= 1 && x >= -1) && (z <= 1 && z >= -1))
+				{
+					GameObject temp = terrain.polyTerrain(polyscale / 4, sizescale * 4, heightscale, perlinscale * 4, 0, polyscale * z / (16 * 3 / 5), deform, deformamount, deformseed, terrainmat);
+					temp.transform.position = new Vector3(polyscale * sizescale * x, 0, polyscale * sizescale * z);
+				}
+				else
+				{
+					//GameObject temp = terrain.polyTerrain(polyscale / 2, sizescale * 2, heightscale, perlinscale * 2, polyscale * sizescale * x, polyscale * sizescale * z, deform, deformamount, deformseed, terrainmat);
+					//temp.transform.position = new Vector3(polyscale * sizescale * x, 0, polyscale * sizescale * z);
+				}
+			}
+		}
+    }
+	
     void Update()
     {
         

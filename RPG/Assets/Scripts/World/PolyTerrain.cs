@@ -25,8 +25,9 @@ public class PolyTerrain : MonoBehaviour
 		}
 	}
 
-	public void polyTerrain(int polyscale, float sizescale, float heightscale, float perlinscale, float perlinoffset, bool deform, float deformamount, int deformseed, Material terrainmat)
+	public GameObject polyTerrain(int polyscale, float sizescale, float heightscale, float perlinscale, float perlinoffsetx, float perlinoffsetz, bool deform, float deformamount, int deformseed, Material terrainmat)
 	{
+		polyscale += 1;
 		polyTerrainMesh = new GameObject("Plane");
 		polyTerrainMesh.layer = 9;
 		polyTerrainMesh.AddComponent<MeshFilter>();
@@ -41,7 +42,7 @@ public class PolyTerrain : MonoBehaviour
 		{
 			for (int x = 0; x < polyscale; x++)
 			{
-				terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, Mathf.PerlinNoise(x * perlinscale + perlinoffset, z * perlinscale + perlinoffset) * heightscale, z * sizescale);
+				terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, Mathf.PerlinNoise(x * perlinscale + perlinoffsetx, z * perlinscale + perlinoffsetz) * heightscale, z * sizescale);
 			}
 		}
 
@@ -49,7 +50,7 @@ public class PolyTerrain : MonoBehaviour
 		{
 			for (int x = 0; x < polyscale - 1; x++)
 			{
-				terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, Mathf.PerlinNoise((x + 0.5f) * perlinscale + perlinoffset, (z + 0.5f) * perlinscale + perlinoffset) * heightscale, (z + 0.5f) * sizescale);
+				terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, Mathf.PerlinNoise((x + 0.5f) * perlinscale + perlinoffsetx, (z + 0.5f) * perlinscale + perlinoffsetz) * heightscale, (z + 0.5f) * sizescale);
 			}
 		}
 
@@ -117,5 +118,7 @@ public class PolyTerrain : MonoBehaviour
 		terrainmat.mainTexture = terrainTexture;
 
 		polyTerrainMesh.AddComponent<MeshCollider>();
+
+		return polyTerrainMesh;
 	}
 }
