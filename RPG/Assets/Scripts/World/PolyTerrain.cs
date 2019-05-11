@@ -5,13 +5,28 @@ using UnityEngine;
 
 public class PolyTerrain : MonoBehaviour
 {
+	private Material terrainmat;
+	private int polyscale;
+	private float heightscale;
+	private float sizescale;
+	private float perlinscale;
+	private bool deform;
+	private float deformamount;
+	private int deformseed;
+	private int lod;
+	private float perlinoffsetx;
+	private float perlinoffsetz;
+
 	private Vector3[] terrainVertices;
 	private GameObject polyTerrainMesh;
+	private float roughmult = 50;
+	private float mountainheight = 1.2f;
+	private float mountaincutoff = 0.65f;
+	private float mountainoffset = 100f;
 
 	void Start()
 	{
-		//AssetDatabase.CreateAsset(polyTerrainMesh.GetComponent<MeshFilter>().mesh, "Assets/HillMesh");
-		//AssetDatabase.SaveAssets();
+
 	}
 
 	void Update()
@@ -25,8 +40,20 @@ public class PolyTerrain : MonoBehaviour
 		}
 	}
 
-	public GameObject polyTerrain(int polyscale, float sizescale, float heightscale, float perlinscale, float perlinoffsetx, float perlinoffsetz, bool deform, float deformamount, int deformseed, Material terrainmat)
+	public GameObject polyTerrain(int pols, float sizs, float heis, float pers, float perox, float peroz, bool def, float defa, int defs, Material term, int l, int id)
 	{
+		polyscale = pols;
+		sizescale = sizs;
+		heightscale = heis;
+		perlinscale = pers;
+		perlinoffsetx = perox;
+		perlinoffsetz = peroz;
+		deform = def;
+		deformamount = defa;
+		deformseed = defs;
+		terrainmat = term;
+		lod = l;
+		
 		polyscale += 1;
 		polyTerrainMesh = new GameObject("Plane");
 		polyTerrainMesh.layer = 9;
@@ -42,7 +69,7 @@ public class PolyTerrain : MonoBehaviour
 		{
 			for (int x = 0; x < polyscale; x++)
 			{
-				terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, Mathf.PerlinNoise(x * perlinscale + perlinoffsetx, z * perlinscale + perlinoffsetz) * heightscale, z * sizescale);
+				terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, gety(x, z) , z * sizescale);
 			}
 		}
 
@@ -50,7 +77,7 @@ public class PolyTerrain : MonoBehaviour
 		{
 			for (int x = 0; x < polyscale - 1; x++)
 			{
-				terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, Mathf.PerlinNoise((x + 0.5f) * perlinscale + perlinoffsetx, (z + 0.5f) * perlinscale + perlinoffsetz) * heightscale, (z + 0.5f) * sizescale);
+				terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, gety(x + 0.5f, z + 0.5f), (z + 0.5f) * sizescale);
 			}
 		}
 
@@ -80,6 +107,52 @@ public class PolyTerrain : MonoBehaviour
 		polyTerrainMesh.GetComponent<MeshFilter>().mesh.vertices = terrainVertices;
 		polyTerrainMesh.GetComponent<MeshFilter>().mesh.triangles = terrainTriangles;
 		polyTerrainMesh.GetComponent<MeshFilter>().mesh.RecalculateNormals();
+
+		Vector3[] terrainNormals = polyTerrainMesh.GetComponent<MeshFilter>().mesh.normals;
+		
+		for (int z = 0; z < polyscale; z++)
+		{
+			for (int x = 0; x < polyscale; x++)
+			{
+				Vector3 n = Vector3.zero;
+				if (x == 0 || x == polyscale - 1 || z == 0 || z == polyscale - 1)
+				{
+					Vector3 posa = new Vector3((x - 1) * sizescale, gety(x - 1, z), (z) * sizescale);
+					Vector3 posc = new Vector3((x + 1) * sizescale, gety(x + 1, z), (z) * sizescale);
+					Vector3 posb = new Vector3((x) * sizescale, gety(x, (z - 1)), (z - 1) * sizescale);
+					Vector3 posd = new Vector3((x) * sizescale, gety(x, (z + 1)), (z + 1) * sizescale);
+
+					Vector3 va = posa - terrainVertices[z * polyscale + x];
+					Vector3 vb = posb - terrainVertices[z * polyscale + x];
+					n += Vector3.Cross(va, vb);
+					va = posb - terrainVertices[z * polyscale + x];
+					vb = posc - terrainVertices[z * polyscale + x];
+					n += Vector3.Cross(va, vb);
+					va = posc - terrainVertices[z * polyscale + x];
+					vb = posd - terrainVertices[z * polyscale + x];
+					n += Vector3.Cross(va, vb);
+					va = posd - terrainVertices[z * polyscale + x];
+					vb = posa - terrainVertices[z * polyscale + x];
+					n += Vector3.Cross(va, vb);
+					n = n / 4;
+					n.Normalize();
+					terrainNormals[z * polyscale + x] = -n;
+				}
+				else
+				{
+					//skips a bunch of iterations
+				}
+			}
+		}
+		for (int z = 0; z < polyscale - 1; z++)
+		{
+			for (int x = 0; x < polyscale - 1; x++)
+			{
+
+			}
+		}
+
+		polyTerrainMesh.GetComponent<MeshFilter>().mesh.normals = terrainNormals;
 
 		Vector2[] terrainUV = new Vector2[terrainVertices.Length];
 
@@ -119,6 +192,23 @@ public class PolyTerrain : MonoBehaviour
 
 		polyTerrainMesh.AddComponent<MeshCollider>();
 
+		ObjExporter.MeshToFile(polyTerrainMesh.GetComponent<MeshFilter>(), "Assets/TerrainMesh" + id + ".obj");
+		
+		//AssetDatabase.CreateAsset(polyTerrainMesh.GetComponent<MeshFilter>().mesh, "Assets/TerrainMesh" + id);
+		//AssetDatabase.SaveAssets();
+
 		return polyTerrainMesh;
+	}
+
+	public float gety(float xpos, float zpos)
+	{
+		float y = Mathf.PerlinNoise(xpos * perlinscale + perlinoffsetx, zpos * perlinscale + perlinoffsetz) * heightscale;
+		float m = Mathf.PerlinNoise(xpos * perlinscale + perlinoffsetx + mountainoffset, zpos * perlinscale + perlinoffsetz + mountainoffset);
+		if (m > mountaincutoff)
+		{
+			m = (m - mountaincutoff) / (1f - mountaincutoff);
+			y = y * (1 + m * mountainheight);
+		}
+		return y;
 	}
 }

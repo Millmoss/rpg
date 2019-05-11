@@ -13,25 +13,27 @@ public class TerrainManager : MonoBehaviour
 	public float deformamount = .1f;
 	public int deformseed = 15;
 	public PolyTerrain terrain;
+	public int gennum = 5;
 	
 	void Start()
-    {
-		terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, 0, 0, deform, deformamount, deformseed, terrainmat);
-		for (int x = -2; x < 3; x++)
+	{
+		int cent = Mathf.CeilToInt(((float)gennum) / 2f);
+		terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, polyscale * cent * perlinscale, polyscale * cent * perlinscale, deform, deformamount, deformseed, terrainmat, 0, cent * gennum + cent);
+		for (int x = 0; x < gennum; x++)
 		{
-			for (int z = -2; z < 3; z++)
+			for (int z = 0; z < gennum; z++)
 			{
-				if (x == 0 && z == 0)
+				if (cent == x && cent == z)
 				{
 					continue;
 				}
 
-				if ((x <= 1 && x >= -1) && (z <= 1 && z >= -1))
+				//if ((x <= cent + 1 && x >= cent - 1) && (z <= cent + 1 && z >= cent - 1))
 				{
-					GameObject temp = terrain.polyTerrain(polyscale / 4, sizescale * 4, heightscale, perlinscale * 4, 0, polyscale * z / (16 * 3 / 5), deform, deformamount, deformseed, terrainmat);
-					temp.transform.position = new Vector3(polyscale * sizescale * x, 0, polyscale * sizescale * z);
+					GameObject temp = terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, polyscale * x * perlinscale, polyscale * z * perlinscale, deform, deformamount, deformseed, terrainmat, 1, x * gennum + z);
+					temp.transform.position = new Vector3(polyscale * sizescale * (x - cent), 0, polyscale * sizescale * (z - cent));
 				}
-				else
+				//else
 				{
 					//GameObject temp = terrain.polyTerrain(polyscale / 2, sizescale * 2, heightscale, perlinscale * 2, polyscale * sizescale * x, polyscale * sizescale * z, deform, deformamount, deformseed, terrainmat);
 					//temp.transform.position = new Vector3(polyscale * sizescale * x, 0, polyscale * sizescale * z);

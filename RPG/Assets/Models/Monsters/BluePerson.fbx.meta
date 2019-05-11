@@ -251,18 +251,18 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Sprint
-      takeName: Armature|Sprint
-      internalID: -3112965366749432192
+      name: Armature|TestIdle
+      takeName: Armature|TestIdle
+      internalID: -187756709501066540
       firstFrame: 0
-      lastFrame: 16
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -280,18 +280,18 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|TestIdle
-      takeName: Armature|TestIdle
-      internalID: -187756709501066540
+      name: Armature|Sprint
+      takeName: Armature|Sprint
+      internalID: 0
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 16
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
