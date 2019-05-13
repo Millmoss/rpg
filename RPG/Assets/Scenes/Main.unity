@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.65080994, g: 0.666729, b: 0.7075472, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
@@ -585,12 +585,12 @@ MonoBehaviour:
   polyscale: 100
   heightscale: 50
   sizescale: 0.5
-  perlinscale: 0.0075
+  perlinscale: 0.00375
   deform: 0
   deformamount: 0.1
   deformseed: 15
   terrain: {fileID: 267825513}
-  gennum: 5
+  gennum: 17
 --- !u!1 &267886996
 GameObject:
   m_ObjectHideFlags: 0
@@ -2261,12 +2261,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 3844840764437698986, guid: a74f125580992d941a85c55036ee3493,
+    - target: {fileID: 5280437864986516906, guid: a74f125580992d941a85c55036ee3493,
         type: 3}
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 5280437864986516906, guid: a74f125580992d941a85c55036ee3493,
+    - target: {fileID: 3844840764437698986, guid: a74f125580992d941a85c55036ee3493,
         type: 3}
       propertyPath: m_Layer
       value: 10

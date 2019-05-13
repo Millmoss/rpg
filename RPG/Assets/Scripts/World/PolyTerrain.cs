@@ -19,10 +19,20 @@ public class PolyTerrain : MonoBehaviour
 
 	private Vector3[] terrainVertices;
 	private GameObject polyTerrainMesh;
-	private float roughmult = 50;
-	private float mountainheight = 1.2f;
-	private float mountaincutoff = 0.65f;
+
+	//mountains
+	private float mroughmult = 50;
+	private float mheightscale = 5f;
+	private float mountaincutoff = 0.45f;
 	private float mountainoffset = 100f;
+	private float mperlinscale = 0.05f;
+
+	//plains
+	private float proughmult = 50;
+	private float pheightscale = 0.1f;
+	private float plainscutoff = 0.45f;
+	private float plainsoffset = 200f;
+	private float pperlinscale = 0.01f;
 
 	void Start()
 	{
@@ -31,13 +41,7 @@ public class PolyTerrain : MonoBehaviour
 
 	void Update()
 	{
-		//for (int z = 0; z < polyscale * 10; z++)
-		{
-			//for (int x = 0; x < polyscale * 10; x++)
-			{
-				//float f = Perlin.Noise(x * perlinscale + perlinoffset, z * perlinscale + perlinoffset) * heightscale;
-			}
-		}
+		
 	}
 
 	public GameObject polyTerrain(int pols, float sizs, float heis, float pers, float perox, float peroz, bool def, float defa, int defs, Material term, int l, int id)
@@ -45,7 +49,9 @@ public class PolyTerrain : MonoBehaviour
 		polyscale = pols;
 		sizescale = sizs;
 		heightscale = heis;
+		mheightscale = heis * 20f;
 		perlinscale = pers;
+		mperlinscale = perlinscale * mperlinscale;
 		perlinoffsetx = perox;
 		perlinoffsetz = peroz;
 		deform = def;
@@ -53,7 +59,7 @@ public class PolyTerrain : MonoBehaviour
 		deformseed = defs;
 		terrainmat = term;
 		lod = l;
-		
+
 		polyscale += 1;
 		polyTerrainMesh = new GameObject("Plane");
 		polyTerrainMesh.layer = 9;
@@ -190,25 +196,42 @@ public class PolyTerrain : MonoBehaviour
 
 		terrainmat.mainTexture = terrainTexture;
 
-		polyTerrainMesh.AddComponent<MeshCollider>();
+		//polyTerrainMesh.AddComponent<MeshCollider>();
 
-		ObjExporter.MeshToFile(polyTerrainMesh.GetComponent<MeshFilter>(), "Assets/TerrainMesh" + id + ".obj");
+		//ObjExporter.MeshToFile(polyTerrainMesh.GetComponent<MeshFilter>(), "Assets/TerrainMesh" + id + ".obj");
+
+		polyTerrainMesh.layer = 0;
+		polyTerrainMesh.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 		
-		//AssetDatabase.CreateAsset(polyTerrainMesh.GetComponent<MeshFilter>().mesh, "Assets/TerrainMesh" + id);
-		//AssetDatabase.SaveAssets();
-
 		return polyTerrainMesh;
 	}
 
 	public float gety(float xpos, float zpos)
 	{
-		float y = Mathf.PerlinNoise(xpos * perlinscale + perlinoffsetx, zpos * perlinscale + perlinoffsetz) * heightscale;
-		float m = Mathf.PerlinNoise(xpos * perlinscale + perlinoffsetx + mountainoffset, zpos * perlinscale + perlinoffsetz + mountainoffset);
+		//original crappy terrain code
+		/*float y = Perlin.Noise(xpos * perlinscale + perlinoffsetx, zpos * perlinscale + perlinoffsetz) * heightscale;
+		float m = Mathf.PerlinNoise(xpos * mperlinscale + (perlinoffsetx + mountainoffset) * mperlinscale, zpos * mperlinscale + (perlinoffsetz + mountainoffset) * mperlinscale);
+		float p = Mathf.PerlinNoise(xpos * pperlinscale + (perlinoffsetx + plainsoffset) * pperlinscale, zpos * pperlinscale + (perlinoffsetz + plainsoffset) * pperlinscale);
 		if (m > mountaincutoff)
 		{
 			m = (m - mountaincutoff) / (1f - mountaincutoff);
-			y = y * (1 + m * mountainheight);
+			y = y * (1 + m * m * mheightscale);
 		}
+		else
+			y = y * p * p;
+		return y;*/
+
+		//better terrain code
+		float y = Perlin.Noise(xpos * perlinscale + perlinoffsetx, zpos * perlinscale + perlinoffsetz);     //this is the initial noise that forms the region map
+		float m = Mathf.PerlinNoise(xpos * mperlinscale + (perlinoffsetx + mountainoffset) * mperlinscale, zpos * mperlinscale + (perlinoffsetz + mountainoffset) * mperlinscale);
+		float p = Mathf.PerlinNoise(xpos * pperlinscale + (perlinoffsetx + plainsoffset) * pperlinscale, zpos * pperlinscale + (perlinoffsetz + plainsoffset) * pperlinscale);
+		if (m > mountaincutoff)
+		{
+			m = (m - mountaincutoff) / (1f - mountaincutoff);
+			y = y * (1 + m * m * mheightscale);
+		}
+		else
+			y = y * p * p;
 		return y;
 	}
 }

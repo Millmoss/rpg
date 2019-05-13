@@ -18,14 +18,21 @@ public class TerrainManager : MonoBehaviour
 	void Start()
 	{
 		int cent = Mathf.CeilToInt(((float)gennum) / 2f);
-		terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, polyscale * cent * perlinscale, polyscale * cent * perlinscale, deform, deformamount, deformseed, terrainmat, 0, cent * gennum + cent);
+
+		// * ~ * ~ * this is garbage but it fixes a bug * ~ * ~ *
+		GameObject fixer = terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, polyscale * cent * perlinscale, polyscale * cent * perlinscale, deform, deformamount, deformseed, terrainmat, 0, cent * gennum + cent);
+		Destroy(fixer);
+		fixer = terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, polyscale * cent * perlinscale, polyscale * cent * perlinscale, deform, deformamount, deformseed, terrainmat, 0, cent * gennum + cent);
+		Destroy(fixer);
+		// * ~ * ~ * this is garbage but it fixes a bug * ~ * ~ *
+
 		for (int x = 0; x < gennum; x++)
 		{
 			for (int z = 0; z < gennum; z++)
 			{
-				if (cent == x && cent == z)
+				//if (cent == x && cent == z)
 				{
-					continue;
+					//continue;
 				}
 
 				//if ((x <= cent + 1 && x >= cent - 1) && (z <= cent + 1 && z >= cent - 1))
