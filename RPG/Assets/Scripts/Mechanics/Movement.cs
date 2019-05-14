@@ -22,14 +22,6 @@ public class Movement : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetMouseButton(0))
-		{
-			anim.Play("Cut", 0, 1);
-		}
-		else
-		{
-			anim.Play("Move", 0, 1);
-		}
 		float x = input.getXTiltMove();
 		float z = input.getZTiltMove();
 		bool sprinting = input.getSprint();

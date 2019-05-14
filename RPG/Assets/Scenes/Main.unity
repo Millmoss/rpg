@@ -596,7 +596,7 @@ MonoBehaviour:
   deformamount: 0.1
   deformseed: 15
   terrain: {fileID: 267825513}
-  gennum: 17
+  gennum: 3
 --- !u!1 &267886996
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,6 +924,7 @@ GameObject:
   - component: {fileID: 307736944}
   - component: {fileID: 307736947}
   - component: {fileID: 307736948}
+  - component: {fileID: 307736949}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -1012,6 +1013,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: 0
+--- !u!114 &307736949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307736943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6579d483f163d745a87c0ad8a163e24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 1444633701}
 --- !u!1 &335295809
 GameObject:
   m_ObjectHideFlags: 0
