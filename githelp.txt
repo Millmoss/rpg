@@ -1,3 +1,38 @@
+HOW TO PUSH CHANGES
+
 git add .
 git commit -m "Adding githelp file"
 git push
+
+
+
+HOW TO CHANGE BRANCHES
+You will need to commit and push any changes to do this
+
+git checkout dontcareatall
+git checkout master
+
+
+
+HOW TO MERGE BRANCHES
+You will want to commit and push any changes to do this
+
+git pull origin master
+
+
+
+IF YOU'VE PUSHED AND TRIED TO CHANGE BRANCHES, BUT YOU CAN'T
+
+git stash
+
+
+
+IF YOU FUCKED SOMETHING UP AND NEED TO RESET THE ENTIRE BRANCH
+
+git reset --hard
+
+
+
+IF YOU NEED TO RETURN TO A PREVIOUS COMMIT
+
+git reset --hard HEAD^
