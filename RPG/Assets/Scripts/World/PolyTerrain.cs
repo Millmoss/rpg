@@ -23,6 +23,7 @@ public class PolyTerrain : MonoBehaviour
 
 	private Vector3[] terrainVertices;
 	private GameObject polyTerrainMesh;
+	private Color[] terrainColors;
 
 	public GameObject polyTerrain(TerrainManager tm, float perox, float peroz, int l)
 	{
@@ -55,15 +56,22 @@ public class PolyTerrain : MonoBehaviour
 		terrainVertices = new Vector3[polyscale * polyscale];
 		//int[] terrainTriangles = new int[(polyscale - 1) * (polyscale - 1) * 12];
 		int[] terrainTriangles = new int[(polyscale - 1) * (polyscale - 1) * 6];
+		terrainColors = new Color[terrainVertices.Length];
 
 		for (int z = 0; z < polyscale; z++)
 		{
 			for (int x = 0; x < polyscale; x++)
 			{
 				if (z % 2 == 0)
+				{
 					terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, gety(x, z), z * sizescale);
+					terrainColors[z * polyscale + x] = getcolor(x * sizescale, terrainVertices[z * polyscale + x].y, z * sizescale);
+				}
 				else
+				{
 					terrainVertices[z * polyscale + x] = new Vector3((x + 0.5f) * sizescale, gety(x + 0.5f, z), z * sizescale);
+					terrainColors[z * polyscale + x] = getcolor((x + 0.5f) * sizescale, terrainVertices[z * polyscale + x].y, z * sizescale);
+				}
 				//if (x < polyscale - 1 && z < polyscale - 1)
 					//terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, gety(x + 0.5f, z + 0.5f), (z + 0.5f) * sizescale);
 			}
@@ -112,7 +120,9 @@ public class PolyTerrain : MonoBehaviour
 
 		polyTerrainMesh.GetComponent<MeshFilter>().mesh.vertices = terrainVertices;
 		polyTerrainMesh.GetComponent<MeshFilter>().mesh.triangles = terrainTriangles;
+		polyTerrainMesh.GetComponent<MeshFilter>().mesh.colors = terrainColors;
 		polyTerrainMesh.GetComponent<MeshFilter>().mesh.RecalculateNormals();
+		polyTerrainMesh.GetComponent<MeshRenderer>().material = terrainmat;
 
 		Vector3[] terrainNormals = polyTerrainMesh.GetComponent<MeshFilter>().mesh.normals;
 		
@@ -180,7 +190,7 @@ public class PolyTerrain : MonoBehaviour
 
 		//polyTerrainMesh.GetComponent<MeshFilter>().mesh.uv = terrainUV;
 
-		Texture2D terrainTexture = new Texture2D(polyscale, polyscale, TextureFormat.ARGB32, false);
+		/*Texture2D terrainTexture = new Texture2D(polyscale, polyscale, TextureFormat.ARGB32, false);
 
 		Color gr = Color.green;
 		gr = new Color(gr.r, gr.g, gr.b);
@@ -192,9 +202,9 @@ public class PolyTerrain : MonoBehaviour
 				//terrainTexture.SetPixel(x, z, new Color(gr.r * (.4f * areaMap[x, z].y / heightscale) + gr.r / 4, gr.g * (.4f * areaMap[x, z].y / heightscale) + gr.g / 4, gr.b * (.4f * areaMap[x, z].y / heightscale) + gr.b / 4, 0));
 			}
 		}
-		terrainTexture.Apply();
+		terrainTexture.Apply();*/
 
-		terrainmat.mainTexture = terrainTexture;
+		//terrainmat.mainTexture = terrainTexture;
 
 		//polyTerrainMesh.AddComponent<MeshCollider>();
 
@@ -249,7 +259,7 @@ public class PolyTerrain : MonoBehaviour
 		float yact = ypos / heightscale;
 		for (int i = 0; i < regions.Length; i++)
 		{
-			float d = Mathf.Abs(Mathf.Abs(yact) - Mathf.Abs(regions[i].height));
+			float d = Mathf.Abs(yact - regions[i].height);
 			if (d < dif)
 			{
 				dif = d;

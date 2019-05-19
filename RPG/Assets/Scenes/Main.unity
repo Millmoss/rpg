@@ -587,7 +587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fbd12958c6c9640999b194aff0eee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainmat: {fileID: 2100000, guid: f26b10dfc0c37174b91d4c2bcafb00e2, type: 2}
+  terrainmat: {fileID: 2100000, guid: f92667262544607419ffcd2b72e99d8f, type: 2}
   polyscale: 100
   heightscale: 50
   sizescale: 0.5
@@ -596,27 +596,27 @@ MonoBehaviour:
   deformamount: 0.1
   deformseed: 15
   terrain: {fileID: 267825513}
-  gennum: 3
+  gennum: 9
   octaves: 4
   persistance: 0.5
   lacunarity: 2
   regions:
   - name: Grass
-    height: 0.1
-    cutoff: 0.8
-    color: {r: 0.017172515, g: 0.6132076, b: 0, a: 0}
-  - name: Sand
-    height: 0
-    cutoff: 0.8
-    color: {r: 0.8773585, g: 0.7727095, b: 0.56697226, a: 0}
-  - name: Mud
     height: -0.2
     cutoff: 0.8
-    color: {r: 0.38679248, g: 0.19409671, b: 0, a: 0}
-  - name: Rock
-    height: 0.6
+    color: {r: 0.19953722, g: 0.7169812, b: 0.31936038, a: 0}
+  - name: Sand
+    height: -0.5
+    cutoff: 0.8
+    color: {r: 0.8773585, g: 0.7727095, b: 0.56697226, a: 0}
+  - name: LowRock
+    height: 0.1
     cutoff: 0.95
-    color: {r: 0.44895872, g: 0.48439196, b: 0.5566038, a: 0}
+    color: {r: 0.54089534, g: 0.55823624, b: 0.6132076, a: 0}
+  - name: Rock
+    height: 0.5
+    cutoff: 0.95
+    color: {r: 0.623309, g: 0.6938253, b: 0.8207547, a: 0}
   - name: Snow
     height: 1
     cutoff: 0.9
