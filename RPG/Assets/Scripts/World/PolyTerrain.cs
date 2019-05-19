@@ -16,74 +16,51 @@ public class PolyTerrain : MonoBehaviour
 	private int lod;
 	private float perlinoffsetx;
 	private float perlinoffsetz;
+	private int octaves;
+	private float persistance;
+	private float lacunarity;
+	private TerrainType[] regions;
 
 	private Vector3[] terrainVertices;
 	private GameObject polyTerrainMesh;
 
-	//mountains
-	private float mroughmult = 50;
-	private float mheightscale = 5f;
-	private float mountaincutoff = 0.45f;
-	private float mountainoffset = 100f;
-	private float mperlinscale = 0.05f;
-
-	//plains
-	private float proughmult = 50;
-	private float pheightscale = 0.1f;
-	private float plainscutoff = 0.45f;
-	private float plainsoffset = 200f;
-	private float pperlinscale = 0.01f;
-
-	void Start()
+	public GameObject polyTerrain(TerrainManager tm, float perox, float peroz, int l)
 	{
+		polyscale = tm.polyscale;
+		sizescale = tm.sizescale;
+		heightscale = tm.heightscale;
+		perlinscale = tm.perlinscale;
+		deform = tm.deform;
+		deformamount = tm.deformamount;
+		deformseed = tm.deformseed;
+		terrainmat = tm.terrainmat;
+		octaves = tm.octaves;
+		persistance = tm.persistance;
+		lacunarity = tm.lacunarity;
+		regions = tm.regions;
 
-	}
-
-	void Update()
-	{
-		
-	}
-
-	public GameObject polyTerrain(int pols, float sizs, float heis, float pers, float perox, float peroz, bool def, float defa, int defs, Material term, int l, int id)
-	{
-		polyscale = pols;
-		sizescale = sizs;
-		heightscale = heis;
-		mheightscale = heis * 20f;
-		perlinscale = pers;
-		mperlinscale = perlinscale * mperlinscale;
 		perlinoffsetx = perox;
 		perlinoffsetz = peroz;
-		deform = def;
-		deformamount = defa;
-		deformseed = defs;
-		terrainmat = term;
 		lod = l;
 
 		polyscale += 1;
-		polyTerrainMesh = new GameObject("Plane");
+		polyTerrainMesh = new GameObject("Terrain");
 		polyTerrainMesh.layer = 9;
 		polyTerrainMesh.AddComponent<MeshFilter>();
 		polyTerrainMesh.GetComponent<MeshFilter>().mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 		polyTerrainMesh.AddComponent<MeshRenderer>();
 		polyTerrainMesh.GetComponent<MeshRenderer>().material = terrainmat;
 		Random.InitState(deformseed);
-		terrainVertices = new Vector3[polyscale * polyscale + (polyscale - 1) * (polyscale - 1)];    //areamap in the first polyscale square, the inbetweens in the second
+		terrainVertices = new Vector3[polyscale * polyscale + (polyscale - 1) * (polyscale - 1)];
 		int[] terrainTriangles = new int[(polyscale - 1) * (polyscale - 1) * 12];
 
 		for (int z = 0; z < polyscale; z++)
 		{
 			for (int x = 0; x < polyscale; x++)
 			{
-				terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, gety(x, z) , z * sizescale);
-			}
-		}
-
-		for (int z = 0; z < polyscale - 1; z++)
-		{
-			for (int x = 0; x < polyscale - 1; x++)
-			{
-				terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, gety(x + 0.5f, z + 0.5f), (z + 0.5f) * sizescale);
+				terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, gety(x, z), z * sizescale);
+				if (x < polyscale - 1 && z < polyscale - 1)
+					terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, gety(x + 0.5f, z + 0.5f), (z + 0.5f) * sizescale);
 			}
 		}
 
@@ -222,16 +199,45 @@ public class PolyTerrain : MonoBehaviour
 		return y;*/
 
 		//better terrain code
-		float y = Perlin.Noise(xpos * perlinscale + perlinoffsetx, zpos * perlinscale + perlinoffsetz);     //this is the initial noise that forms the region map
-		float m = Mathf.PerlinNoise(xpos * mperlinscale + (perlinoffsetx + mountainoffset) * mperlinscale, zpos * mperlinscale + (perlinoffsetz + mountainoffset) * mperlinscale);
-		float p = Mathf.PerlinNoise(xpos * pperlinscale + (perlinoffsetx + plainsoffset) * pperlinscale, zpos * pperlinscale + (perlinoffsetz + plainsoffset) * pperlinscale);
-		if (m > mountaincutoff)
+
+		float amplitude = 1;
+		float frequency = 1;
+		float y = 0;
+
+		for (int o = 0; o < octaves; o++)
 		{
-			m = (m - mountaincutoff) / (1f - mountaincutoff);
-			y = y * (1 + m * m * mheightscale);
+			float sampx = (xpos + perlinoffsetx) * perlinscale * frequency;
+			float sampz = (zpos + perlinoffsetz) * perlinscale * frequency;
+			float pval = Perlin.Noise(sampx, sampz);
+			//float pval = Mathf.PerlinNoise(sampx, sampz) * 2 - 1;
+
+			y += pval * amplitude;
+			amplitude *= persistance;
+			frequency *= lacunarity;
 		}
-		else
-			y = y * p * p;
-		return y;
+
+		return y * heightscale;
+	}
+
+	public Color getcolor(float xpos, float ypos, float zpos)
+	{
+		int closest = 0;
+		float dif = 2;
+		float yact = ypos / heightscale;
+		for (int i = 0; i < regions.Length; i++)
+		{
+			float d = Mathf.Abs(Mathf.Abs(yact) - Mathf.Abs(regions[i].height));
+			if (d < dif)
+			{
+				dif = d;
+				closest = i;
+			}
+		}
+		return regions[closest].color;
+	}
+
+	public int getregion(float xpos, float ypos, float zpos)
+	{
+		return 0;
 	}
 }

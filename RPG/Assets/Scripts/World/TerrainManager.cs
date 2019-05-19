@@ -14,15 +14,20 @@ public class TerrainManager : MonoBehaviour
 	public int deformseed = 15;
 	public PolyTerrain terrain;
 	public int gennum = 5;
-	
+	public int octaves = 1;
+	public float persistance = 1;
+	public float lacunarity = 2;
+
+	public TerrainType[] regions;
+
 	void Start()
 	{
 		int cent = Mathf.CeilToInt(((float)gennum) / 2f);
 
 		// * ~ * ~ * this is garbage but it fixes a bug * ~ * ~ *
-		GameObject fixer = terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, polyscale * cent * perlinscale, polyscale * cent * perlinscale, deform, deformamount, deformseed, terrainmat, 0, cent * gennum + cent);
+		GameObject fixer = terrain.polyTerrain(this, polyscale * cent, polyscale * cent, 0);
 		Destroy(fixer);
-		fixer = terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, polyscale * cent * perlinscale, polyscale * cent * perlinscale, deform, deformamount, deformseed, terrainmat, 0, cent * gennum + cent);
+		fixer = terrain.polyTerrain(this, polyscale * cent, polyscale * cent, 0);
 		Destroy(fixer);
 		// * ~ * ~ * this is garbage but it fixes a bug * ~ * ~ *
 
@@ -37,7 +42,7 @@ public class TerrainManager : MonoBehaviour
 
 				//if ((x <= cent + 1 && x >= cent - 1) && (z <= cent + 1 && z >= cent - 1))
 				{
-					GameObject temp = terrain.polyTerrain(polyscale, sizescale, heightscale, perlinscale, polyscale * x * perlinscale, polyscale * z * perlinscale, deform, deformamount, deformseed, terrainmat, 1, x * gennum + z);
+					GameObject temp = terrain.polyTerrain(this, polyscale * x, polyscale * z, 0);
 					temp.transform.position = new Vector3(polyscale * sizescale * (x - cent), 0, polyscale * sizescale * (z - cent));
 				}
 				//else
@@ -53,4 +58,13 @@ public class TerrainManager : MonoBehaviour
     {
         
     }
+}
+
+[System.Serializable]
+public struct TerrainType
+{
+	public string name;
+	public float height;
+	public float cutoff;
+	public Color color;
 }

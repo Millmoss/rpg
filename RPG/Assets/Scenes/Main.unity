@@ -597,6 +597,30 @@ MonoBehaviour:
   deformseed: 15
   terrain: {fileID: 267825513}
   gennum: 3
+  octaves: 4
+  persistance: 0.5
+  lacunarity: 2
+  regions:
+  - name: Grass
+    height: 0.1
+    cutoff: 0.8
+    color: {r: 0.017172515, g: 0.6132076, b: 0, a: 0}
+  - name: Sand
+    height: 0
+    cutoff: 0.8
+    color: {r: 0.8773585, g: 0.7727095, b: 0.56697226, a: 0}
+  - name: Mud
+    height: -0.2
+    cutoff: 0.8
+    color: {r: 0.38679248, g: 0.19409671, b: 0, a: 0}
+  - name: Rock
+    height: 0.6
+    cutoff: 0.95
+    color: {r: 0.44895872, g: 0.48439196, b: 0.5566038, a: 0}
+  - name: Snow
+    height: 1
+    cutoff: 0.9
+    color: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1 &267886996
 GameObject:
   m_ObjectHideFlags: 0
@@ -3239,11 +3263,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b6a55e06e316f3448b71e3f1eb82196e, type: 2}
-    - target: {fileID: -6057140222963153312, guid: 99f3a0efb4eb44f49807af5e83cfdd0a,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 6545698aa169bdb4ea01010c01b3095f, type: 2}
     - target: {fileID: -4216859302048453862, guid: 99f3a0efb4eb44f49807af5e83cfdd0a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3304,6 +3323,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: f6a0aea528f5c58439284d36b8909c46, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 99f3a0efb4eb44f49807af5e83cfdd0a,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6545698aa169bdb4ea01010c01b3095f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99f3a0efb4eb44f49807af5e83cfdd0a, type: 3}
 --- !u!4 &1278355951
@@ -4727,83 +4751,6 @@ Transform:
   - {fileID: 1986501499}
   m_Father: {fileID: 871614967}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1965944772
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1965944775}
-  - component: {fileID: 1965944774}
-  - component: {fileID: 1965944773}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!23 &1965944773
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1965944772}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1965944774
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1965944772}
-  m_Mesh: {fileID: 0}
---- !u!4 &1965944775
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1965944772}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -109.934265, y: 47.366207, z: -64.51515}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1980704050
 GameObject:
