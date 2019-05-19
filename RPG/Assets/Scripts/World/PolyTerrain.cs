@@ -51,24 +51,47 @@ public class PolyTerrain : MonoBehaviour
 		polyTerrainMesh.AddComponent<MeshRenderer>();
 		polyTerrainMesh.GetComponent<MeshRenderer>().material = terrainmat;
 		Random.InitState(deformseed);
-		terrainVertices = new Vector3[polyscale * polyscale + (polyscale - 1) * (polyscale - 1)];
-		int[] terrainTriangles = new int[(polyscale - 1) * (polyscale - 1) * 12];
+		//terrainVertices = new Vector3[polyscale * polyscale + (polyscale - 1) * (polyscale - 1)];
+		terrainVertices = new Vector3[polyscale * polyscale];
+		//int[] terrainTriangles = new int[(polyscale - 1) * (polyscale - 1) * 12];
+		int[] terrainTriangles = new int[(polyscale - 1) * (polyscale - 1) * 6];
 
 		for (int z = 0; z < polyscale; z++)
 		{
 			for (int x = 0; x < polyscale; x++)
 			{
-				terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, gety(x, z), z * sizescale);
-				if (x < polyscale - 1 && z < polyscale - 1)
-					terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, gety(x + 0.5f, z + 0.5f), (z + 0.5f) * sizescale);
+				if (z % 2 == 0)
+					terrainVertices[z * polyscale + x] = new Vector3(x * sizescale, gety(x, z), z * sizescale);
+				else
+					terrainVertices[z * polyscale + x] = new Vector3((x + 0.5f) * sizescale, gety(x + 0.5f, z), z * sizescale);
+				//if (x < polyscale - 1 && z < polyscale - 1)
+					//terrainVertices[polyscale * polyscale + ((polyscale - 1) * z) + x] = new Vector3((x + 0.5f) * sizescale, gety(x + 0.5f, z + 0.5f), (z + 0.5f) * sizescale);
 			}
 		}
 
 		int cur = 0;
-		for (int z = 0; z < polyscale - 1; z++)
+		for (int z = 0; z < polyscale - 1; z += 2)
 		{
 			for (int x = 0; x < polyscale - 1; x++)
 			{
+				terrainTriangles[cur + 2] = z * polyscale + x;
+				terrainTriangles[cur + 1] = z * polyscale + x + 1;
+				terrainTriangles[cur + 0] = (z + 1) * polyscale + x;
+				terrainTriangles[cur + 3] = z * polyscale + x + 1;
+				terrainTriangles[cur + 4] = (z + 1) * polyscale + x;
+				terrainTriangles[cur + 5] = (z + 1) * polyscale + x + 1;
+				cur += 6;
+				if (z + 1 < polyscale - 1)
+				{
+					terrainTriangles[cur + 2] = (z + 1) * polyscale + x;
+					terrainTriangles[cur + 1] = (z + 2) * polyscale + x + 1;
+					terrainTriangles[cur + 0] = (z + 2) * polyscale + x;
+					terrainTriangles[cur + 3] = (z + 1) * polyscale + x;
+					terrainTriangles[cur + 4] = (z + 2) * polyscale + x + 1;
+					terrainTriangles[cur + 5] = (z + 1) * polyscale + x + 1;
+					cur += 6;
+				}
+				/*
 				//setting triangles
 				terrainTriangles[cur + 0] = z * polyscale + x;
 				terrainTriangles[cur + 1] = polyscale * polyscale + ((polyscale - 1) * z) + x;
@@ -83,7 +106,7 @@ public class PolyTerrain : MonoBehaviour
 				terrainTriangles[cur + 10] = polyscale * polyscale + ((polyscale - 1) * z) + x;
 				terrainTriangles[cur + 9] = (z + 1) * polyscale + x + 1;
 				//increment
-				cur += 12;
+				cur += 12;*/
 			}
 		}
 
