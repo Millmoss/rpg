@@ -68,3 +68,11 @@ public struct TerrainType
 	public float cutoff;
 	public Color color;
 }
+
+public enum Region
+{
+	Plains,
+	Hills,
+	Mountain,
+	
+}

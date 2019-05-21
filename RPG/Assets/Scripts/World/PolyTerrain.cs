@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -216,23 +217,8 @@ public class PolyTerrain : MonoBehaviour
 		return polyTerrainMesh;
 	}
 
-	public float gety(float xpos, float zpos)
+	/*public float gety(float xpos, float zpos)		//backup in case shit goes bad
 	{
-		//original crappy terrain code
-		/*float y = Perlin.Noise(xpos * perlinscale + perlinoffsetx, zpos * perlinscale + perlinoffsetz) * heightscale;
-		float m = Mathf.PerlinNoise(xpos * mperlinscale + (perlinoffsetx + mountainoffset) * mperlinscale, zpos * mperlinscale + (perlinoffsetz + mountainoffset) * mperlinscale);
-		float p = Mathf.PerlinNoise(xpos * pperlinscale + (perlinoffsetx + plainsoffset) * pperlinscale, zpos * pperlinscale + (perlinoffsetz + plainsoffset) * pperlinscale);
-		if (m > mountaincutoff)
-		{
-			m = (m - mountaincutoff) / (1f - mountaincutoff);
-			y = y * (1 + m * m * mheightscale);
-		}
-		else
-			y = y * p * p;
-		return y;*/
-
-		//better terrain code
-
 		float amplitude = 1;
 		float frequency = 1;
 		float y = 0;
@@ -247,6 +233,56 @@ public class PolyTerrain : MonoBehaviour
 			y += pval * amplitude;
 			amplitude *= persistance;
 			frequency *= lacunarity;
+		}
+
+		return y * heightscale;
+	}*/
+
+	public float gety(float xpos, float zpos)
+	{
+		float amplitude = 1;
+		float frequency = 1;
+		float y = 0;
+
+		for (int o = 0; o < octaves; o++)
+		{
+			float sampx = (xpos - 100) * perlinscale * frequency;
+			float sampz = (zpos - 100) * perlinscale * frequency;
+			float pval = Perlin.Noise(sampx, sampz);
+			//float pval = Mathf.PerlinNoise(sampx, sampz) * 2 - 1;
+
+			y += pval * amplitude;
+			amplitude *= persistance;
+			frequency *= lacunarity;
+		}
+
+		float region = getregion(y);
+		if (Mathf.Abs(Mathf.Round(region) - region) < 0.01f)
+		{
+
+		}
+
+		return y;
+	}
+
+	public float getymountain(float xpos, float zpos)
+	{
+		float amplitude = 1;
+		float frequency = 1;
+		float y = 0;
+		float lac = lacunarity;
+		float pers = persistance;
+
+		for (int o = 0; o < 4; o++)
+		{
+			float sampx = (xpos + perlinoffsetx) * perlinscale * frequency;
+			float sampz = (zpos + perlinoffsetz) * perlinscale * frequency;
+			float pval = Perlin.Noise(sampx, sampz);
+			//float pval = Mathf.PerlinNoise(sampx, sampz) * 2 - 1;
+
+			y += pval * amplitude;
+			amplitude *= pers;
+			frequency *= lac;
 		}
 
 		return y * heightscale;
@@ -285,7 +321,7 @@ public class PolyTerrain : MonoBehaviour
 		return r;
 	}
 
-	public int getregion(float xpos, float ypos, float zpos)
+	public List<Tuple<int, float>> getregion(float ypos)	//list of regions at this location with the weight of each regions. All weights should equate to 1
 	{
 		return 0;
 	}
