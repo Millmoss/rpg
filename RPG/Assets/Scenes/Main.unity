@@ -589,9 +589,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrainmat: {fileID: 2100000, guid: f92667262544607419ffcd2b72e99d8f, type: 2}
   polyscale: 100
-  heightscale: 50
-  sizescale: 0.5
-  perlinscale: 0.00375
+  heightscale: 200
+  sizescale: 1
+  perlinscale: 0.001875
   deform: 0
   deformamount: 0.1
   deformseed: 15
@@ -612,11 +612,11 @@ MonoBehaviour:
   - name: LowRock
     height: 0.1
     cutoff: 0.95
-    color: {r: 0.54089534, g: 0.55823624, b: 0.6132076, a: 0}
+    color: {r: 0.46274513, g: 0.56078434, b: 0.7372549, a: 0}
   - name: Rock
     height: 0.5
     cutoff: 0.95
-    color: {r: 0.623309, g: 0.6938253, b: 0.8207547, a: 0}
+    color: {r: 0.46164113, g: 0.56035596, b: 0.735849, a: 0}
   - name: Snow
     height: 1
     cutoff: 0.9

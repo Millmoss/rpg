@@ -255,18 +255,34 @@ public class PolyTerrain : MonoBehaviour
 	public Color getcolor(float xpos, float ypos, float zpos)
 	{
 		int closest = 0;
+		int second = 0;
 		float dif = 2;
+		float seconddif = 2;
 		float yact = ypos / heightscale;
 		for (int i = 0; i < regions.Length; i++)
 		{
 			float d = Mathf.Abs(yact - regions[i].height);
 			if (d < dif)
 			{
+				seconddif = dif;
+				second = closest;
 				dif = d;
 				closest = i;
 			}
+			else if (d < seconddif)
+			{
+				seconddif = d;
+				second = i;
+			}
 		}
-		return regions[closest].color;
+
+		float p = 2 * (Mathf.Abs(regions[closest].height - yact) / Mathf.Abs(regions[closest].height - regions[second].height));
+		float l = 1;
+		if (p > regions[closest].cutoff && regions[closest].height > regions[second].height)
+			l = 1 - (p - regions[closest].cutoff) / (1f - regions[closest].cutoff);
+		Color r = Color.Lerp(regions[second].color, regions[closest].color, l);
+
+		return r;
 	}
 
 	public int getregion(float xpos, float ypos, float zpos)
